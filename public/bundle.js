@@ -657,6 +657,8 @@ const buildAttractionAssets = (category, attraction) => {
 let postItinBtn = document.getElementById('post-itinerary-button');
 postItinBtn.addEventListener('click', function() {
   state.selectedAttractions.push(parseInt(location.hash.substring(1, location.hash.length)));
+  
+  //post Json to the server
   fetch('/api/itineraries', {
     headers: {
       'Content-Type': 'application/json'
@@ -667,6 +669,8 @@ postItinBtn.addEventListener('click', function() {
     )
   });
 })
+
+//listening for hash changes
 window.onhashchange = () => {
   loadItinerary();
 }
@@ -722,8 +726,15 @@ const fetchAttractions = () =>
     .then(result => result.json())
     .catch(err => console.error(err));
 
+const fetchItinerary=(hash)=>
+		fetch('/api/itineraries/'+hash)
+		.then(result=>result.json())
+
+
 module.exports = {
-  fetchAttractions
+  fetchAttractions,
+  fetchItinerary
+
 };
 
 

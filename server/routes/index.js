@@ -5,9 +5,11 @@ const Activity = require("../models").Activity;
 const Itinerary = require("../models").Itinerary;
 const db = require("../models").db;
 
+
+//returns all the attractions for a given itinerary
 router.get('/itineraries/:id', (req, res, next) => {
   Itinerary.findById(req.params.id, {
-    include: [{all: true, nested: true}]
+    include: [{all: true, nested: true}]  //include to eager load model's related data, with nested:true will include all levels
   })
   .then(foundItineraries => res.json(foundItineraries))
   .catch(next);
@@ -30,11 +32,13 @@ router.get("/", (req, res, next) => {
     .catch(next);
 });
 
+
+//save a new itinerary with hotels, restaurants and activities
 router.post('/itineraries', (req, res, next) => {
     const itineraryId = req.body.pop();
     
     req.body.forEach((itineraryItem) => {
-      let tableName,
+      let tableName, 
       type;
       switch(itineraryItem.category) {
         case 'hotels': 
